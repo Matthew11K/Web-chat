@@ -42,8 +42,6 @@ body {
 
 select {
     border-radius: 10px;
-    width: 22%;
-    height: 53px;
     padding-left: 15px;
     font-family: "Open Sans";
     font-size: 1.2em;
@@ -55,6 +53,7 @@ select {
     background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%24%20height%3D%24%20viewBox%3D%0%200%2024%2024%20fill%3D%23000%3E%3Cpath%20d%3D%M8%12l8-8%3%3-l-8%8%3-3z%3E%3C/path%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: right center;
+    margin-top: 15px;
 }
 option {
     color: black;
@@ -67,25 +66,21 @@ option:hover {
     
 #phone {
     border-radius: 10px;
-    width: 20.8%;
-    height: 51px;
     padding-left: 15px;
     font-family: "Open Sans";
     font-size: 1.2em;
     background-color: #f2f2f2;
     color: #333;
     border: 2px solid #4E1600;
-    
+
     background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%24%20height%3D%24%20viewBox%3D%0%200%2024%2024%20fill%3D%23000%3E%3Cpath%20d%3D%M8%12l8-8%3%3-l-8%8%3-3z%3E%3C/path%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: right center;
-    margin-top: 5px;
+    margin-top: 6px;
 }
 
 #Next {
     border-radius: 10px;
-    width: 22%;
-    height: 50px;
     padding-left: 15px;
     font-family: "Open Sans";
     font-size: 1.2em;
@@ -102,5 +97,18 @@ option:hover {
 #Next:hover {
     background-color: #fa8e42;
 }
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+select, #phone,#Next {
+    width: 20%;
+    height: 50px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 
 
