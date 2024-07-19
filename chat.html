@@ -16,13 +16,22 @@
             <span id = "Nickname">Никнейм</span>
             <span id = "nameCopmapy">CapyChat</span>
         </header>
-        <main id = "main">
-
+        <main id="main">  
+            <div class="messege-text-left">
+                <p>Никнейм</p>
+                <p>Сообщение такое вот мда длинное вот ещё белое и в 2 строки почти</p>
+                <p>23.47</p>
+            </div>
+            <!-- <div class="messege-text-right">
+                <p>Огого</p>
+                <p>23.47</p>
+            </div> -->
+            <div style="height: 100px;"></div>
         </main>
         <footer>
             <img onmousedown="return false" id="clip" src="imeges/скрепка.png" alt="Avatar">
-            <textarea id="textMessege" oninput="autiResize(this)"></textarea>
-            <button id="Send" type="submit">
+            <textarea id="textMessege" oninput="autiResize(this)" placeholder="Сообщение"></textarea>
+            <button id="Send" onclick="SendMessege()">
                 <img onmousedown="return false" src="imeges/send1.png">
             </button>
         </footer>

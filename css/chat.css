@@ -17,7 +17,8 @@ header {
     height: 70px;
     width: 100%;
     position: fixed;
-    top:0
+    top: 0;
+    z-index: 1;
 }
 
 #Avatar {
@@ -53,9 +54,7 @@ header {
     transform: translate(-50%,-50%);
 }
 
-#main {
-    
-}
+
 footer {
     position: fixed;
     bottom: 5px;
@@ -113,4 +112,73 @@ footer {
 }
 #Send:hover img {
     opacity: 0.6;
+}
+
+main {
+    margin-top: 80px;
+    
+    width: 700px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
+.messege-text-left {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column; 
+    width: fit-content;
+    max-width: 500px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 15px;
+    margin-bottom: 5px; 
+}
+  
+.messege-text-left p {
+    color: black;
+    font-family: "Open Sans";
+    font-size: 1em;
+    font-weight: 500;
+    word-break: break-word;
+}
+.messege-text-left p:nth-child(1), .messege-text-left p:nth-child(3){
+    display: block;
+    margin-top: 0;
+    font-size: 0.7em;
+    font-weight: 400; 
+}
+.messege-text-left p:nth-child(1){
+    font-weight: 700;
+}
+
+
+
+.messege-text-right {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: fit-content;
+    max-width: 500px;
+    padding: 10px;
+    background-color: #c9f5bc;
+    border-radius: 15px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    
+}
+.messege-text-right p {
+    color: black;
+    font-family: "Open Sans";
+    font-size: 1em;
+    font-weight: 500;
+    word-break: break-word;
+}
+.messege-text-right p:nth-child(2){
+    display: block;
+    margin-top: 0;
+    font-size: 0.7em;
+    font-weight: 400; 
 }
