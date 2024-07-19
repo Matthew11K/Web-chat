@@ -4,13 +4,20 @@
     padding: 0;
 }
 body {
-    height: 1000px;
+    height: 10000px;
+    background-image: url('/imeges/апельсины2.jpg');
+    background-size: 100%;
+    background-repeat: repeat;
+    
+    height: 100%;
+    width: 100%;
 }
 header {
     background-color: #F46E0B;
     height: 70px;
     width: 100%;
-    position: relative;
+    position: fixed;
+    top:0
 }
 
 #Avatar {
@@ -46,33 +53,64 @@ header {
     transform: translate(-50%,-50%);
 }
 
-/* #telephoneNumber {
-    position: absolute;
-    top:50%;
-    right: 60px;
-    transform: translate(0,-50%);
-
+#main {
+    
+}
+footer {
+    position: fixed;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+   
+    background-color: #ffab61;
+    color: #fff;
+    padding: 10px;
+    border-radius: 20px;
+    border: 3px solid #8ac27a;
+    display: flex;
+}
+#clip {
+    height: 40px;
+    width: 40px; 
+    cursor: pointer; 
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#clip:hover  {
+    opacity: 0.8;
+}
+#textMessege {
+    color: black;
     font-family: "Open Sans";
     font-size: 1em;
-    color: #242323;
-}
-#telephoneImg {
-    position: absolute;
-    top:50%;
-    right: 20px;
-    transform: translate(0,-50%);
-
-    height: 30px;
-    width: 30px;
-    
-    margin: 5px 20px;
-} */
-#main {
-    background-image: url('/imeges/апельсины2.jpg');
+    font-weight: 400;
+    border: 0;
+    border-radius: 15px;
    
-    background-repeat: repeat;
-    background-size: 100%;
-    box-sizing: border-box;
-    height: 100%;
+   
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 500px;
+    height: 30px;
+    padding: 15px 20px;
+    overflow: hidden;
+    resize: none;
+}
+#Send { 
+    background-image: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    background-color: transparent;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#Send img {
     width: 100%;
+    height: 100%;
+}
+#Send:hover img {
+    opacity: 0.6;
 }
