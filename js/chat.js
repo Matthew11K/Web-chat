@@ -16,7 +16,14 @@ function SendMessege() {
         chat.insertBefore(newElement, lastElement);
         text.value = ''; 
     }
+    
     autiResize(text);
+
+    window.scrollTo({
+        top: document.body.scrollWidth,
+        behavior: 'smooth'
+    });
+       
 }
 
 
