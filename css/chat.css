@@ -105,6 +105,7 @@ footer {
     background-color: transparent;
     margin-top: 5px;
     margin-bottom: 5px;
+    user-select: none;
 }
 #Send img {
     width: 100%;
