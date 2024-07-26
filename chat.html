@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset= "utf-8">
+        <meta name="author" content = "Вячеслав Гуров">
+        <meta name="description" content="Чат">
+        <meta name="keywords" content="capy, Capy, Chat, CapyChat">
+        <title>
+            CapyChat
+        </title>
+        <link rel = "styleSheet" href="css/chat.css">
+    </head>
+    <body>
+        <header>
+            <img onmousedown="return false" id="Avatar" src="imeges/капи1.jpg" alt="Avatar">
+            <span id = "Nickname">Никнейм</span>
+            <span id = "nameCopmapy">CapyChat</span>
+        </header>
+        <main id="main">  
+            <div class="messege-text-left">
+                <p>Никнейм</p>
+                <p>Сообщение такое вот мда длинное вот ещё белое и в 2 строки почти</p>
+                <p>23.47</p>
+            </div>
+            <!-- <div class="messege-text-right">
+                <p>Огого</p>
+                <p>23.47</p>
+            </div> -->
+            <div style="height: 100px;"></div>
+        </main>
+        <footer>
+            <img onmousedown="return false" id="clip" src="imeges/скрепка.png" alt="Avatar">
+            <textarea id="textMessege" oninput="autiResize(this)" placeholder="Сообщение"></textarea>
+            <button id="Send" onclick="SendMessege()">
+                <img onmousedown="return false" src="imeges/send1.png">
+            </button>
+        </footer>
+        <script src="js/chat.js"></script>
+    </body>
+</html>
