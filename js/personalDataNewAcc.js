@@ -1,43 +1,77 @@
-document.getElementById("regist-form").addEventListener("submit", checkForm)
-function checkForm(event) {
+document.getElementById("regist-form").addEventListener("submit", checkForm);
+
+async function checkForm(event) {
     event.preventDefault();
     var form = document.getElementById("regist-form");
 
-    var Surname = form.Surname.value;
-    var Name = form.Name.value;
-    var NickName = form.NickName.value;
-    var password1 = form.password1.value;
-    var password2 = form.password2.value;
-    
+    var Surname = form.surname ? form.surname.value : null;
+    var Name = form.name ? form.name.value : null;
+    var NickName = form.nickname ? form.nickname.value : null;
+    var password1 = form.password1 ? form.password1.value : null;
+    var password2 = form.password2 ? form.password2.value : null;
+
+    console.log('Form Elements:', form);
+    console.log('Surname:', Surname);
+    console.log('Name:', Name);
+    console.log('NickName:', NickName);
+    console.log('Password1:', password1);
+    console.log('Password2:', password2);
+
     var fail = "";
-    if (Surname.length < 2) {
-        fail = "Фамилия дожна состоять не менее чем из 2 символов."
-    } else if (Name.length < 2) {
-        fail = "Имя дожно состоять не менее чем из 2 символов."
+    if (Surname === null || Surname.length < 2) {
+        fail = "Фамилия должна состоять не менее чем из 2 символов.";
+    } else if (Name === null || Name.length < 2) {
+        fail = "Имя должно состоять не менее чем из 2 символов.";
     } else if (ContainsInvalidCharacters(Surname) || ContainsInvalidCharacters(Name)) {
-        fail = "Имя и фамилия могут состоять только из латиницы и кириллицы."
-    } else if (NickName.length < 1) {
-        fail = "Никнейм дожнен состоять не менее чем из 1 символа."
-    } else if (password1.length < 1) {
-        fail = "Пароль дожнен состоять не менее чем из 8 символов."
-    } else if (password1 != password2) {
-        fail = "Пароли не совпадают."
-    } 
-    
-    
-    if (fail != "") {
+        fail = "Имя и фамилия могут состоять только из латиницы и кириллицы.";
+    } else if (NickName === null || NickName.length < 1) {
+        fail = "Никнейм должен состоять не менее чем из 1 символа.";
+    } else if (password1 === null || password1.length < 8) {
+        fail = "Пароль должен состоять не менее чем из 8 символов.";
+    } else if (password1 !== password2) {
+        fail = "Пароли не совпадают.";
+    }
+
+    if (fail !== "") {
         document.getElementById("error").innerHTML = fail;
     } else {
-        // window.location="ссылка" - переносит на другой сайт, но поставь return false
+        const newUser = {
+            surname: Surname,
+            name: Name,
+            nickname: NickName,
+            password: password1
+        };
+
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('user_id', data.user_id);
+                window.location.href = '/chat.html';
+            } else {
+                const errorData = await response.json();
+                console.log('Server response:', errorData);
+                document.getElementById("error").innerHTML = errorData.message;
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
     }
 }
 
 function ContainsInvalidCharacters(str) {
     for (let i = 0; i < str.length; i++) {
         const charCode = str.charCodeAt(i);
-        if (!((charCode >= 1040 && charCode <= 1103)||(charCode >= 65 && charCode <= 90)||(charCode >= 97 && charCode <= 122))) {
+        if (!((charCode >= 1040 && charCode <= 1103) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122))) {
             return true;
         }
     }
     return false;
-  }
+}
