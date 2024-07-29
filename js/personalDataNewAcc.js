@@ -67,11 +67,7 @@ async function checkForm(event) {
 }
 
 function ContainsInvalidCharacters(str) {
-    for (let i = 0; i < str.length; i++) {
-        const charCode = str.charCodeAt(i);
-        if (!((charCode >= 1040 && charCode <= 1103) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122))) {
-            return true;
-        }
-    }
-    return false;
+    const regex = /^[А-Яа-яA-Za-z]+$/;
+    return !regex.test(str);
 }
+
