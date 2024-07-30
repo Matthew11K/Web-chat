@@ -1,8 +1,8 @@
-document.getElementById("regist-form").addEventListener("submit", checkForm);
+document.getElementById("login-form").addEventListener("submit", checkForm);
 
 async function checkForm(event) {
     event.preventDefault();
-    var form = document.getElementById("regist-form");
+    var form = document.getElementById("login-form");
 
     var NickName = form.nickname.value;
     var password = form.password.value;
