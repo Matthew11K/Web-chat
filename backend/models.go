@@ -12,6 +12,7 @@ type User struct {
 	Name     string `json:"name"`
 	NickName string `json:"nickname"`
 	Password string `json:"password"`
+	Phone    string `json:"phone"`
 }
 
 type Credentials struct {
@@ -34,7 +35,7 @@ func (u *User) Create() error {
 	}
 
 	log.Printf("Inserting user into database: %+v", u)
-	_, err = db.Exec("INSERT INTO users (surname, name, nickname, password) VALUES ($1, $2, $3, $4)", u.Surname, u.Name, u.NickName, hashedPassword)
+	_, err = db.Exec("INSERT INTO users (surname, name, nickname, password, phone) VALUES ($1, $2, $3, $4, $5)", u.Surname, u.Name, u.NickName, hashedPassword, u.Phone)
 	if err != nil {
 		log.Printf("Error executing insert: %v", err)
 		return err
@@ -44,8 +45,8 @@ func (u *User) Create() error {
 
 func Authenticate(creds Credentials) (*User, error) {
 	var user User
-	row := db.QueryRow("SELECT id, surname, name, nickname, password FROM users WHERE nickname = $1", creds.NickName)
-	if err := row.Scan(&user.ID, &user.Surname, &user.Name, &user.NickName, &user.Password); err != nil {
+	row := db.QueryRow("SELECT id, surname, name, nickname, password, phone FROM users WHERE nickname = $1", creds.NickName)
+	if err := row.Scan(&user.ID, &user.Surname, &user.Name, &user.NickName, &user.Password, &user.Phone); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, errors.New("user not found")
 		}

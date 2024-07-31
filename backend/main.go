@@ -4,15 +4,13 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
-
-	"github.com/gorilla/mux"
 )
 
 func main() {
 	db := InitDB()
 	defer db.Close()
 
-	router := mux.NewRouter()
+	router := NewRouter()
 
 	staticFileDirectory := http.Dir("./")
 	staticFileHandler := http.StripPrefix("/", http.FileServer(staticFileDirectory))
@@ -37,10 +35,10 @@ func main() {
 		http.ServeFile(w, r, filepath.Join("./", "personalDataNewAcc.html"))
 	}).Methods("GET")
 
-	router.HandleFunc("/register", RegisterHandler).Methods("POST")
-	router.HandleFunc("/login", LoginHandler).Methods("POST")
-	router.HandleFunc("/chat", ChatHandler).Methods("POST")
-	router.HandleFunc("/messages", GetMessagesHandler).Methods("GET")
+	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("Serving static file: %s", r.URL.Path)
+		http.ServeFile(w, r, filepath.Join("./", r.URL.Path))
+	})
 
 	log.Println("Server started on :8080")
 	if err := http.ListenAndServe(":8080", router); err != nil {

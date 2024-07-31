@@ -31,6 +31,9 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("User created with ID: %d", userID)
+	log.Printf("User phone: %s", user.Phone)
+
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{"status": "success", "user_id": userID})
 }
@@ -62,6 +65,40 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
+}
+
+func CheckPhoneHandler(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Phone string `json:"phone"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		log.Printf("Error decoding request body: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	log.Printf("Checking if phone exists: %s", input.Phone)
+
+	var userExists bool
+	err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE phone=$1)", input.Phone).Scan(&userExists)
+	if err != nil {
+		log.Printf("Error checking phone existence: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("Phone exists: %t", userExists)
+
+	response := map[string]bool{
+		"exists": userExists,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		log.Printf("Error encoding response: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func ChatHandler(w http.ResponseWriter, r *http.Request) {

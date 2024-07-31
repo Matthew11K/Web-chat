@@ -1,3 +1,11 @@
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const phone = urlParams.get('phone');
+    if (phone) {
+        document.getElementById('phone').value = phone;
+    }
+});
+
 document.getElementById("regist-form").addEventListener("submit", checkForm);
 
 async function checkForm(event) {
@@ -9,6 +17,9 @@ async function checkForm(event) {
     var NickName = form.nickname ? form.nickname.value : null;
     var password1 = form.password1 ? form.password1.value : null;
     var password2 = form.password2 ? form.password2.value : null;
+    var Phone = form.phone ? form.phone.value : null;
+
+    console.log("Submitting registration form with data:", { Surname, Name, NickName, password1, password2, Phone });
 
     console.log('Form Elements:', form);
     console.log('Surname:', Surname);
@@ -16,6 +27,7 @@ async function checkForm(event) {
     console.log('NickName:', NickName);
     console.log('Password1:', password1);
     console.log('Password2:', password2);
+    console.log('Phone', Phone);
 
     var fail = "";
     if (Surname === null || Surname.length < 2) {
@@ -39,7 +51,8 @@ async function checkForm(event) {
             surname: Surname,
             name: Name,
             nickname: NickName,
-            password: password1
+            password: password1,
+            phone: Phone
         };
 
         try {

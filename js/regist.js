@@ -24,31 +24,25 @@ async function checkForm(event) {
     if (fail !== "") {
         document.getElementById("error").innerHTML = fail;
     } else {
-        const credentials = {
-            nickname: form.nickname.value,
-            password: form.password.value
-        };
+        const response = await fetch('/checkPhone', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phone })
+        });
 
-        try {
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(credentials)
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user_id', data.user_id);
-                window.location.href = '/chat.html';
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            if (data.exists) {
+                window.location.href = '/personalDataEnterAcc.html?phone=' + encodeURIComponent(phone);
             } else {
-                const errorData = await response.json();
-                document.getElementById("error").innerHTML = errorData.message;
+                window.location.href = '/personalDataNewAcc.html?phone=' + encodeURIComponent(phone);
             }
-        } catch (error) {
-            console.error('Ошибка:', error);
+        } else {
+            const errorData = await response.json();
+            document.getElementById("error").innerHTML = errorData.message;
         }
     }
 }

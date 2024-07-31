@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS users (
                                      surname VARCHAR(50),
                                      name VARCHAR(50),
                                      nickname VARCHAR(50) UNIQUE,
-                                     password VARCHAR(100)
+                                     password VARCHAR(100),
+                                     phone VARCHAR(20) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS messages (
