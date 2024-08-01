@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset= "utf-8">
+        <meta name="author" content = "Вячеслав Гуров">
+        <meta name="description" content="Мой Аккаунт">
+        <meta name="keywords" content="capy, Capy, Chat, CapyChat">
+        <title>
+            Персональные данные
+        </title>
+        <link rel = "styleSheet" href="css/PersonalData.css">
+    </head>
+    <body>
+        <div id = "DataBlock">
+            <span id = "name">Личные данные</span><br>
+            <div style="text-align: center; float: left;">
+                <div id = 'editAvaBlock'>
+                    <img onmousedown="return false" id="avatar" src="imeges/капи1.jpg" alt="Logo">
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    <button class="edit" onclick="editAvatar()">
+                        <img src='imeges/редактировать.png' alt="Редактировать" class="imgEdit">
+                    </button>
+                </div>
+            
+                <div class="strData">
+                    <input id="nickname" type="text" value="Старый Никнейм" placeholder="Введите новый никнейм">
+                    <button class="edit" onclick="editNickname()">
+                        <img src='imeges/редактировать.png' alt="Редактировать" class="imgEdit">
+                    </button>
+                </div>
+            </div>
+            <div id = "passwordBlock">
+                <div class="strData" >
+                    <input id="password" type="text" value="" placeholder="Старый пароль">
+                    <button class="edit" onclick="editPassword()">
+                        <img src='imeges/редактировать.png' alt="Редактировать" class="imgEdit">
+                    </button>
+                </div>
+                <span id = 'passwordHelpStr'>
+                    Введите старый пароль.
+                </span>
+            </div>
+            
+        </div>
+        <script src="js/PersonalData.js"></script>
+    </body>
+</html>

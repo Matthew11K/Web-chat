@@ -18,7 +18,7 @@ function checkForm(event) {
         fail = "Имя и фамилия могут состоять только из латиницы и кириллицы."
     } else if (NickName.length < 1) {
         fail = "Никнейм дожнен состоять не менее чем из 1 символа."
-    } else if (password1.length < 1) {
+    } else if (password1.length < 8) {
         fail = "Пароль дожнен состоять не менее чем из 8 символов."
     } else if (password1 != password2) {
         fail = "Пароли не совпадают."
