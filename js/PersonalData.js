@@ -1,49 +1,197 @@
-function editNickname() {
-    if (document.getElementById('nickname').value.length >0 &&  document.getElementById('nickname').value != 'Старый Никнейм') {
-        // "изменить никнейм в аккаунте"
-    } 
-}
-function editPassword() {
-    password = document.getElementById('password');
-    text = document.getElementById('passwordHelpStr');
-    if (password.placeholder == "Старый пароль") {
-        if (password.value == "Старый пароль") { // Тут надо сравнивать с паролем из базы
-            password.placeholder = "Новый пароль";
-            text.innerHTML = "Введите новый пароль.";
-            password.value = "";
-        } else {
-            text.innerHTML = "Введён неверный пароль.";
-        }
-    } else if (password.placeholder == "Новый пароль") {
-        if (ContainsInvalidCharacters(password.value)) {
-            text.innerHTML = "Пароль не может содержать пробелы.";
-        } else if (password.value.length<8) {
-            text.innerHTML = "Пароль дожнен состоять не менее чем из 8 символов.";
-        } else {
-            // сохранить новый пароль в базу
-            text.innerHTML = "Новый пароль сохранен.";
-            password.placeholder == "Старый пароль"
-            password.value = "";
-        }
+//это не окончательный вариант, все данные для полей будут браться из базы, но пока так
+
+function editField(fieldId) {
+    const field = document.getElementById(fieldId);
+    const editButton = document.querySelector(`#${fieldId} ~ .edit`);
+    const saveButton = document.querySelector(`#save-${fieldId}`);
+    const cancelButton = document.querySelector(`#cancel-${fieldId}`);
+
+    field.dataset.originalValue = field.value; 
+    field.readOnly = false;
+
+    if (fieldId === 'phoneNumber') {
+        field.value = '+';
+    } else {
+        field.value = ''; 
     }
+
+    editButton.style.display = 'none';
+    saveButton.style.display = 'inline-block';
+    cancelButton.style.display = 'inline-block';
 }
-function ContainsInvalidCharacters(str) {
-    for (let i = 0; i < str.length; i++) {
-        if (str.slice(i,i+1) == " ") {
-            return true;
-        }
+
+function saveField(fieldId) {
+    const field = document.getElementById(fieldId);
+    const editButton = document.querySelector(`#${fieldId} ~ .edit`);
+    const saveButton = document.querySelector(`#save-${fieldId}`);
+    const cancelButton = document.querySelector(`#cancel-${fieldId}`);
+
+    const invalidChars = /[^a-zA-Zа-яА-Я\s-]/; 
+    const nicknameInvalidChars = /[^a-zA-Z0-9-._]/;
+
+    switch (fieldId) {
+        case 'firstName':
+            if (field.value.trim() === '') {
+                showPopup("Поле не может оставаться пустым", 'error');
+                return;
+            }
+            if (field.value.trim().length < 1) {
+                showPopup("Имя должно содержать не менее 1 символа", 'error');
+                return;
+            }
+            if (field.value.length > 25) {
+                showPopup("Имя не должно превышать 25 символов", 'error');
+                return;
+            }
+            if (invalidChars.test(field.value)) {
+                showPopup("Использование недопустимых символов", 'error');
+                return;
+            }
+            if (/[\s-]{2,}/.test(field.value)) {
+                showPopup("Не может быть более одного пробела или тире подряд", 'error');
+                return;
+            }
+            if (/^[\s-]|[\s-]$/.test(field.value)) {
+                showPopup("Имя не может начинаться или заканчиваться пробелом или тире", 'error');
+                return;
+            }
+            break;
+        case 'surname':
+            if (field.value.trim() === '') {
+                showPopup("Поле не может оставаться пустым", 'error');
+                return;
+            }
+            if (field.value.trim().length < 1) {
+                showPopup("Фамилия должна содержать не менее 1 символа", 'error');
+                return;
+            }
+            if (field.value.length > 25) {
+                showPopup("Фамилия не должна превышать 25 символов", 'error');
+                return;
+            }
+            if (invalidChars.test(field.value)) {
+                showPopup("Использование недопустимых символов", 'error');
+                return;
+            }
+            if (/[\s-]{2,}/.test(field.value)) {
+                showPopup("Не может быть более одного пробела или тире подряд", 'error');
+                return;
+            }
+            if (/^[\s-]|[\s-]$/.test(field.value)) {
+                showPopup("Фамилия не может начинаться или заканчиваться пробелом или тире", 'error');
+                return;
+            }
+            break;
+        case 'phoneNumber':
+            if (field.value.trim() === '') {
+                showPopup("Поле не может оставаться пустым", 'error');
+                return;
+            }
+            if (!field.value.startsWith('+')) {
+                showPopup("Номер телефона должен начинаться с +", 'error');
+                return;
+            }
+            if (!/^\+\d+$/.test(field.value)) {
+                showPopup("Номер телефона должен содержать только цифры после +", 'error');
+                return;
+            }
+            if (field.value.length < 12) { // +1 for the '+' sign
+                showPopup("Номер телефона должен содержать не менее 11 цифр после +", 'error');
+                return;
+            }
+            if (field.value.length > 20) {
+                showPopup("Номер телефона не должен превышать 20 символов", 'error');
+                return;
+            }
+            break;
+        case 'nickname':
+            if (field.value.trim() === '') {
+                showPopup("Поле не может оставаться пустым", 'error');
+                return;
+            }
+            if (field.value.trim().length < 8) {
+                showPopup("Никнейм должен содержать не менее 8 символов", 'error');
+                return;
+            }
+            if (field.value.length > 25) {
+                showPopup("Никнейм не должен превышать 25 символов", 'error');
+                return;
+            }
+            if (/[\u0400-\u04FF]/.test(field.value)) {
+                showPopup("Никнейм не должен содержать кириллицу", 'error');
+                return;
+            }
+            if (nicknameInvalidChars.test(field.value)) {
+                showPopup("Используются недопустимые символы", 'error');
+                return;
+            }
+            if (!/[^._-]/.test(field.value)) {
+                showPopup("Недопустимый формат никнейма", 'error');
+                return;
+            }
+            break;
     }
-    return false;
+
+    field.readOnly = true;
+
+    editButton.style.display = 'inline-block';
+    saveButton.style.display = 'none';
+    cancelButton.style.display = 'none';
+
+    showPopup("Изменения сохранены!", 'success');
 }
+
+function cancelEdit(fieldId) {
+    const field = document.getElementById(fieldId);
+    const editButton = document.querySelector(`#${fieldId} ~ .edit`);
+    const saveButton = document.querySelector(`#save-${fieldId}`);
+    const cancelButton = document.querySelector(`#cancel-${fieldId}`);
+
+    field.value = field.dataset.originalValue;
+    field.readOnly = true;
+
+    editButton.style.display = 'inline-block';
+    saveButton.style.display = 'none';
+    cancelButton.style.display = 'none';
+
+    showPopup("Редактирование отменено!", 'error');
+}
+
+function showPopup(message, type = 'error') {
+    const popup = document.getElementById("popup");
+    const popupMessage = document.getElementById("popupMessage");
+
+    popup.classList.remove("popup-success");
+
+    popupMessage.textContent = message;
+    if (type === 'success') {
+        popup.classList.add("popup-success");
+    } else {
+        popup.classList.remove("popup-success");
+    }
+
+    popup.classList.add("show");
+
+    setTimeout(() => {
+        popup.classList.remove("show");
+    }, 2000);
+}
+
 function editAvatar() {
     document.getElementById('fileInput').click();
 }
 
-document.getElementById('fileInput').onchange = function(event) {
+document.getElementById('fileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
     if (file) {
-        const objectUrl = URL.createObjectURL(file);
-        document.getElementById('avatar').src = objectUrl;
-        // +сохранить новую аву
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('avatar').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
     }
+});
+
+function goToOtherPage() {
+    // window.location.href = 'your-url-here'; //здесь будет возвращение на страницу чата
 }
