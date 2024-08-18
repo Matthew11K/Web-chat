@@ -1,17 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap');
+
 * { 
     margin: 0;
     padding: 0;
 }
+
 body {
     height: 10000px;
-    background-image: url('/imeges/апельсины2.jpg');
+    background-image: url('апельсины2.jpg');
     background-size: 100%;
     background-repeat: repeat;
-    
     height: 100%;
     width: 100%;
 }
+
 header {
     background-color: #F46E0B;
     height: 70px;
@@ -35,32 +37,29 @@ header {
     left: 100px;
     transform: translate(0,-50%);
     user-select: none;
-    
     font-family: "Open Sans";
     font-size: 1.2em;
     color: #242323;
     cursor: pointer;
 }
+
 #nameCopmapy {
     color: black;
     font-family: "Open Sans";
     font-size: 2em;
     user-select: none;
     font-weight: 400;
-   
     position: absolute;
     top:50%;
     left: 50%;
     transform: translate(-50%,-50%);
 }
 
-
 footer {
     position: fixed;
     bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
-   
     background-color: #ffab61;
     color: #fff;
     padding: 10px;
@@ -68,6 +67,7 @@ footer {
     border: 3px solid #8ac27a;
     display: flex;
 }
+
 #clip {
     height: 40px;
     width: 40px; 
@@ -75,9 +75,12 @@ footer {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-#clip:hover  {
-    opacity: 0.8;
+
+#clip:hover {
+    opacity: 0.6;
+    filter: grayscale(100%);
 }
+
 #textMessege {
     color: black;
     font-family: "Open Sans";
@@ -85,8 +88,6 @@ footer {
     font-weight: 400;
     border: 0;
     border-radius: 15px;
-   
-   
     margin-left: 10px;
     margin-right: 10px;
     width: 500px;
@@ -95,6 +96,7 @@ footer {
     overflow: hidden;
     resize: none;
 }
+
 #Send { 
     background-image: none;
     border: none;
@@ -107,24 +109,23 @@ footer {
     margin-bottom: 5px;
     user-select: none;
 }
+
 #Send img {
     width: 100%;
     height: 100%;
 }
+
 #Send:hover img {
     opacity: 0.6;
 }
 
 main {
     margin-top: 80px;
-    
     width: 700px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
-
-
 
 .messege-text-left {
     display: flex;
@@ -137,7 +138,7 @@ main {
     border-radius: 15px;
     margin-bottom: 5px; 
 }
-  
+
 .messege-text-left p {
     color: black;
     font-family: "Open Sans";
@@ -145,17 +146,17 @@ main {
     font-weight: 500;
     word-break: break-word;
 }
-.messege-text-left p:nth-child(1), .messege-text-left p:nth-child(3){
+
+.messege-text-left p:nth-child(1), .messege-text-left p:nth-child(3) {
     display: block;
     margin-top: 0;
     font-size: 0.7em;
     font-weight: 400; 
 }
-.messege-text-left p:nth-child(1){
+
+.messege-text-left p:nth-child(1) {
     font-weight: 700;
 }
-
-
 
 .messege-text-right {
     display: flex;
@@ -168,8 +169,9 @@ main {
     border-radius: 15px;
     margin-bottom: 5px;
     margin-left: auto;
-    
+    border: 1.33px solid black; 
 }
+
 .messege-text-right p {
     color: black;
     font-family: "Open Sans";
@@ -177,9 +179,60 @@ main {
     font-weight: 500;
     word-break: break-word;
 }
-.messege-text-right p:nth-child(2){
+
+.messege-text-right p:nth-child(2) {
     display: block;
     margin-top: 0;
+    margin-bottom: -7px; 
+    font-size: 0.6em; 
+    font-weight: 400; 
+}
+
+.messege-file-right {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: fit-content;
+    max-width: 500px;
+    padding: 10px;
+    background-color: #d3d3d3;
+    border-radius: 15px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    border: 1.33px solid black; 
+}
+
+.file-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px; 
+}
+
+.file-icon {
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.file-icon img {
+    width: 40px;
+    height: 40px;
+}
+
+.file-name a {
+    color: blue;
+    text-decoration: underline;
+    font-family: "Open Sans";
+    font-size: 1em;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.messege-file-right p {
+    display: block;
+    margin-top: 0;
+    margin-bottom: -7px; 
     font-size: 0.7em;
     font-weight: 400; 
 }
