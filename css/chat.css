@@ -26,9 +26,10 @@ header {
 }
 
 #clickableContainer {
+    border: 0.1px solid black;
     display: flex;
     align-items: center;
-    padding: 5px 20px;
+    padding: 4.2px 20px;
     cursor: pointer;
     border-radius: 10px;
     background-color: #F46E0B;
@@ -42,11 +43,11 @@ header {
 }
 
 #Nickname {
+    color:blue;
     margin-left: 10px;
     user-select: none;
     font-family: "Open Sans";
     font-size: 1.2em;
-    color: #242323;
 }
 
 #nameCopmapy {
@@ -226,7 +227,6 @@ main {
 }
 
 .file-name a {
-    color: blue;
     text-decoration: underline;
     font-family: "Open Sans";
     font-size: 1em;
