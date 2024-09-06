@@ -192,6 +192,6 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     }
 });
 
-function goToOtherPage() {
-    // window.location.href = 'your-url-here'; //здесь будет возвращение на страницу чата
+function goToChatPage() {
+    window.location.href = 'http://localhost:8080/chat.html';
 }
