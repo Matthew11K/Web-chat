@@ -15,34 +15,31 @@ function SendMessege() {
         chat.insertBefore(newElement, lastElement);
         text.value = ''; 
     }
-    
     autiResize(text);
-    window.scrollTo({
-        top: document.body.scrollWidth,
-        behavior: 'smooth'
-    });
 }
 
-document.getElementById('clip').addEventListener('click', function() {
+function handleAvatarClick() {
+    alert('Аватар или никнейм был нажат');
+}
+
+document.getElementById('clip').addEventListener('click', function () {
     document.getElementById('fileInput').click();
 });
 
 function handleFileSelect(event) {
     var file = event.target.files[0];
     if (file) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var fileContent = e.target.result;
-            var fileName = file.name;
+        var fileReader = new FileReader();
+        fileReader.onload = function () {
             const currentDate = new Date();
-            var newFileMessege = `
+            var newMessege = `
                 <div class="messege-file-right">
                     <div class="file-container">
                         <div class="file-icon">
-                            <img src="файлик.png" alt="File Icon">
+                            <img src="файлик.png" alt="file icon">
                         </div>
                         <div class="file-name">
-                            <a href="${fileContent}" download="${fileName}">${fileName}</a>
+                            <a href="${fileReader.result}" download="${file.name}">${file.name}</a>
                         </div>
                     </div>
                     <p>${currentDate.toLocaleTimeString().substring(0, 5)}</p>
@@ -50,14 +47,9 @@ function handleFileSelect(event) {
             var chat = document.getElementById('main');
             var lastElement = chat.lastElementChild;
             var newElement = document.createElement('div');
-            newElement.innerHTML = newFileMessege;
+            newElement.innerHTML = newMessege;
             chat.insertBefore(newElement, lastElement);
-            window.scrollTo({
-                top: document.body.scrollWidth,
-                behavior: 'smooth'
-            });
-            document.getElementById('fileInput').value = '';
         };
-        reader.readAsDataURL(file);
+        fileReader.readAsDataURL(file);
     }
 }
