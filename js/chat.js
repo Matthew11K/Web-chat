@@ -36,7 +36,7 @@ function handleFileSelect(event) {
                 <div class="messege-file-right">
                     <div class="file-container">
                         <div class="file-icon">
-                            <img src="файлик.png" alt="file icon">
+                            <img src="imeges/файлик.png" alt="file icon">
                         </div>
                         <div class="file-name">
                             <a href="${fileReader.result}" download="${file.name}">${file.name}</a>
