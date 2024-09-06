@@ -2,16 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="author" content="Вячеслав Гуров">
+    <meta name="author" content="Вячеслав Гуров, Трофименко Дмитрий">
     <meta name="description" content="Чат">
     <meta name="keywords" content="capy, Capy, Chat, CapyChat">
     <title>CapyChat</title>
-    <link rel="stylesheet" href="chat.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
     <header>
         <a id="clickableContainer" href="http://localhost:8080/PersonalData.html">
-            <img onmousedown="return false" id="Avatar" src="капи1.jpg" alt="Avatar">
+            <img onmousedown="return false" id="Avatar" src="imeges/капи1.jpg" alt="Avatar">
             <span id="Nickname">Никнейм</span>
         </a>
         <span id="nameCopmapy">CapyChat</span>
@@ -25,13 +25,13 @@
         <div style="height: 100px;"></div>
     </main>
     <footer>
-        <img onmousedown="return false" id="clip" src="скрепка.png" alt="Clip">
+        <img onmousedown="return false" id="clip" src="imeges/скрепка.png" alt="Clip">
         <input type="file" id="fileInput" style="display:none;" onchange="handleFileSelect(event)">
         <textarea id="textMessege" oninput="autiResize(this)" placeholder="Сообщение"></textarea>
         <button id="Send" onclick="SendMessege()">
-            <img onmousedown="return false" src="send1.png">
+            <img onmousedown="return false" src="imeges/send1.png">
         </button>
     </footer>
-    <script src="chat.js"></script>
+    <script src="js/chat.js"></script>
 </body>
 </html>
