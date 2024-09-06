@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="author" content="Вячеслав Гуров, Трофименко Дмитрий">
+    <meta name="author" content="Вячеслав Гуров">
     <meta name="description" content="Чат">
     <meta name="keywords" content="capy, Capy, Chat, CapyChat">
     <title>CapyChat</title>
@@ -10,8 +10,10 @@
 </head>
 <body>
     <header>
-        <img onmousedown="return false" id="Avatar" src="капи1.jpg" alt="Avatar">
-        <span id="Nickname">Никнейм</span>
+        <div id="clickableContainer" onclick="handleAvatarClick()">
+            <img onmousedown="return false" id="Avatar" src="капи1.jpg" alt="Avatar">
+            <span id="Nickname">Никнейм</span>
+        </div>
         <span id="nameCopmapy">CapyChat</span>
     </header>
     <main id="main">  
