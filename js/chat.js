@@ -16,10 +16,10 @@ function SendMessege() {
         text.value = ''; 
     }
     autiResize(text);
-}
-
-function handleAvatarClick() {
-    alert('Аватар или никнейм был нажат');
+    window.scrollTo({
+        top: document.body.scrollWidth,
+        behavior: 'smooth'
+    });
 }
 
 document.getElementById('clip').addEventListener('click', function () {
@@ -36,7 +36,7 @@ function handleFileSelect(event) {
                 <div class="messege-file-right">
                     <div class="file-container">
                         <div class="file-icon">
-                            <img src="imeges/файлик.png" alt="file icon">
+                            <img src="файлик.png" alt="file icon">
                         </div>
                         <div class="file-name">
                             <a href="${fileReader.result}" download="${file.name}">${file.name}</a>
