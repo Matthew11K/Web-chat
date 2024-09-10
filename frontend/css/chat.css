@@ -7,7 +7,7 @@
 
 body {
     height: 10000px;
-    background-image: url('../imeges/апельсины2.jpg');
+    background-image: url('апельсины2.jpg');
     background-size: 100%;
     background-repeat: repeat;
     height: 100%;
@@ -21,50 +21,43 @@ header {
     position: fixed;
     top: 0;
     z-index: 1;
-    display: flex;
-    align-items: center;
-}
-
-#clickableContainer {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    padding: 4.2px 20px;
-    cursor: pointer;
-    border-radius: 10px;
-    background-color: #F46E0B;
-    margin-left: 20px; 
 }
 
 #Avatar {
     height: 60px;
     width: 60px;
     border-radius: 50%;
+    margin: 5px 20px;
+    cursor: pointer;
 }
 
 #Nickname {
-    color:black;
-    margin-left: 10px;
+    position: absolute;
+    top:50%;
+    left: 100px;
+    transform: translate(0,-50%);
     user-select: none;
     font-family: "Open Sans";
-    font-size: 1.5em;
+    font-size: 1.2em;
+    color: #242323;
+    cursor: pointer;
 }
 
 #nameCopmapy {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     color: black;
     font-family: "Open Sans";
     font-size: 2em;
     user-select: none;
     font-weight: 400;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 footer {
-    width:45%;
     position: fixed;
-    bottom: 1px;
+    bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
     background-color: #ffab61;
@@ -97,7 +90,7 @@ footer {
     border-radius: 15px;
     margin-left: 10px;
     margin-right: 10px;
-    width: 620px;
+    width: 500px;
     height: 30px;
     padding: 15px 20px;
     overflow: hidden;
@@ -228,6 +221,7 @@ main {
 }
 
 .file-name a {
+    color: blue;
     text-decoration: underline;
     font-family: "Open Sans";
     font-size: 1em;

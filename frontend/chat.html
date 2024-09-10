@@ -10,10 +10,8 @@
 </head>
 <body>
 <header>
-    <a id="clickableContainer" href="http://localhost:8080/PersonalData.html">
-        <img onmousedown="return false" id="Avatar" src="imeges/капи1.jpg" alt="Avatar">
-        <span id="Nickname">Никнейм</span>
-    </a>
+    <img onmousedown="return false" id="Avatar" src="imeges/капи1.jpg" alt="Avatar">
+    <span id="Nickname">Никнейм</span>
     <span id="nameCopmapy">CapyChat</span>
 </header>
 <main id="main">
@@ -25,8 +23,7 @@
     <div style="height: 100px;"></div>
 </main>
 <footer>
-    <img onmousedown="return false" id="clip" src="imeges/скрепка.png" alt="Clip">
-    <input type="file" id="fileInput" style="display:none;" onchange="handleFileSelect(event)">
+    <img onmousedown="return false" id="clip" src="imeges/скрепка.png" alt="Avatar">
     <textarea id="textMessege" oninput="autoResize(this)" placeholder="Сообщение"></textarea>
     <button id="Send" onclick="SendMessage()">
         <img onmousedown="return false" src="imeges/send1.png">

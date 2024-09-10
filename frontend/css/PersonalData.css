@@ -7,7 +7,7 @@
 }
 
 body {
-    background-image: url('../imeges/апельсины2.jpg');
+    background-image: url('апельсины2.png');
     background-size: 100%;
     background-repeat: repeat;
     height: 100vh;
@@ -219,7 +219,7 @@ body {
 }
 
 #saveChanges {
-    background-color: #F46E0B;
+    background-color: #d47f02;
     color: white;
     width: 96.5%;
     height: 50px;
@@ -238,7 +238,5 @@ body {
 }
 
 #saveChanges:hover {
-    opacity: 0.7;
+    background-color:  #fa8a37;
 }
-
-
