@@ -2,8 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -168,4 +171,49 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Error encoding messages: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+// FileUploadHandler handles the file upload
+func FileUploadHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("File upload handler called")
+
+	// Ограничиваем максимальный размер загружаемого файла (например, до 10 MB)
+	err := r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		log.Printf("Error parsing multipart form: %v", err)
+		http.Error(w, "Error parsing form", http.StatusBadRequest)
+		return
+	}
+
+	// Получаем файл из запроса
+	file, handler, err := r.FormFile("file")
+	if err != nil {
+		log.Printf("Error retrieving the file: %v", err)
+		http.Error(w, "Error retrieving the file", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	log.Printf("Uploaded file: %s, size: %d, MIME header: %v", handler.Filename, handler.Size, handler.Header)
+
+	// Сохраняем файл на сервере
+	filePath := fmt.Sprintf("./uploads/%s", handler.Filename)
+	dst, err := os.Create(filePath)
+	if err != nil {
+		log.Printf("Error creating the file on disk: %v", err)
+		http.Error(w, "Error saving the file", http.StatusInternalServerError)
+		return
+	}
+	defer dst.Close()
+
+	// Копируем содержимое файла в целевой файл на сервере
+	_, err = io.Copy(dst, file)
+	if err != nil {
+		log.Printf("Error copying file content: %v", err)
+		http.Error(w, "Error saving the file", http.StatusInternalServerError)
+		return
+	}
+
+	log.Println("File saved successfully")
+	json.NewEncoder(w).Encode(map[string]string{"filePath": filePath})
 }
