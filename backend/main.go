@@ -40,6 +40,11 @@ func main() {
 		http.ServeFile(w, r, filepath.Join("./frontend", "personalDataNewAcc.html"))
 	}).Methods("GET")
 
+	router.HandleFunc("/PersonalData.html", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Serving PersonalData.html")
+		http.ServeFile(w, r, filepath.Join("./frontend", "PersonalData.html"))
+	}).Methods("GET")
+
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Serving static file: %s", r.URL.Path)
 		http.ServeFile(w, r, filepath.Join("./", r.URL.Path))
