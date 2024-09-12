@@ -170,7 +170,7 @@ async function handleFileSelect(event) {
 }
 
 document.getElementById('Nickname').addEventListener('click', function() {
-    window.location.href = '/frontend/personalData.html'; // Замените на реальный путь к странице
+    window.location.href = '/frontend/PersonalData.html';
 });
 
 
