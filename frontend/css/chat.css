@@ -158,14 +158,10 @@ main {
     word-break: break-word;
 }
 
-.messege-text-left p:nth-child(1),
-.messege-text-left p:nth-child(3) {
+
+.messege-text-left p:nth-child(2) {
     font-size: 0.7em;
     font-weight: 400;
-}
-
-.messege-text-left p:nth-child(1) {
-    font-weight: 700;
 }
 
 .messege-text-right {
