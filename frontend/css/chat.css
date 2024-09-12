@@ -126,6 +126,7 @@ main {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    padding-bottom: 100px;
 }
 
 .messege-text-left, .messege-text-right {
