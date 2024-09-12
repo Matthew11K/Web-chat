@@ -22,15 +22,16 @@ async function loadMessages() {
             const messages = await response.json();
             const chat = document.getElementById('main');
             chat.innerHTML = ''; // Очищаем чат перед добавлением новых сообщений
-
+            var lastElement = document.createElement('div');
             messages.forEach(msg => {
                 var newElement = document.createElement('div');
                 newElement.className = (msg.user_id == localStorage.getItem('user_id')) ? 'messege-text-right' : 'messege-text-left';
                 newElement.innerHTML = `<p>${msg.content.replace(/\n/g, '<br>')}</p><p>${new Date(msg.datetime).toLocaleTimeString().substring(0, 5)}</p>`;
                 chat.appendChild(newElement);
+                lastElement =newElement;
             });
 
-            chat.scrollTop = chat.scrollHeight; // Прокрутка к последнему сообщению
+            lastElement.scrollIntoView({ behavior: 'smooth' }); // Прокрутка к последнему сообщению
         } else {
             console.error('Ошибка загрузки сообщений:', response.statusText);
         }
