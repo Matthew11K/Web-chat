@@ -55,8 +55,9 @@ header {
 }
 
 footer {
+    width:45%;
     position: fixed;
-    bottom: 5px;
+    bottom: 1px;
     left: 50%;
     transform: translateX(-50%);
     background-color: #ffab61;
@@ -65,7 +66,6 @@ footer {
     border-radius: 20px;
     border: 3px solid #8ac27a;
     display: flex;
-    width: 90%; /* Адаптивная ширина */
 }
 
 #clip {
@@ -90,8 +90,8 @@ footer {
     border-radius: 15px;
     margin-left: 10px;
     margin-right: 10px;
-    width: 60%; /* Адаптивная ширина */
-    min-width: 200px; /* Минимальная ширина */
+    width: 90%;
+    height: 30px;
     padding: 15px 20px;
     overflow: hidden;
     resize: none;
