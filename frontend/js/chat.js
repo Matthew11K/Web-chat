@@ -25,10 +25,29 @@ async function loadMessages() {
             var lastElement = document.createElement('div');
             messages.forEach(msg => {
                 var newElement = document.createElement('div');
-                newElement.className = (msg.user_id == localStorage.getItem('user_id')) ? 'messege-text-right' : 'messege-text-left';
-                newElement.innerHTML = `<p>${msg.content.replace(/\n/g, '<br>')}</p><p>${new Date(msg.datetime).toLocaleTimeString().substring(0, 5)}</p>`;
+
+                if (msg.content.startsWith("Файл отправлен")) {
+                    // Сообщение с файлом
+                    newElement.className = 'messege-file-right';
+                    const filePath = msg.content.replace("Файл отправлен: ", "");
+                    newElement.innerHTML = `
+                        <div class="file-container">
+                            <div class="file-icon">
+                                <img src="/frontend/images/файлик.png" alt="file icon">
+                            </div>
+                            <div class="file-name">
+                                <a href="${filePath}" download>Скачать файл</a>
+                            </div>
+                        </div>
+                        <p>${new Date(msg.datetime).toLocaleTimeString().substring(0, 5)}</p>`;
+                } else {
+                    // Обычное текстовое сообщение
+                    newElement.className = (msg.user_id == localStorage.getItem('user_id')) ? 'messege-text-right' : 'messege-text-left';
+                    newElement.innerHTML = `<p>${msg.content.replace(/\n/g, '<br>')}</p><p>${new Date(msg.datetime).toLocaleTimeString().substring(0, 5)}</p>`;
+                }
+
                 chat.appendChild(newElement);
-                lastElement =newElement;
+                lastElement = newElement;
             });
 
             lastElement.scrollIntoView({ behavior: 'smooth' }); // Прокрутка к последнему сообщению
@@ -39,6 +58,7 @@ async function loadMessages() {
         console.error('Ошибка при загрузке сообщений:', error);
     }
 }
+
 
 // Функция отправки текстового сообщения
 async function SendMessage() {
@@ -106,11 +126,13 @@ async function handleFileSelect(event) {
             return;
         }
 
+        console.log('Отправляем токен:', token);
+
         try {
             const response = await fetch('/upload', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}` // Используем токен для аутентификации
+                    'Authorization': `${token}` // Используем токен для аутентификации
                 },
                 body: formData // Отправляем файл на сервер
             });

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"io"
 	"log"
 	"net/http"
@@ -146,19 +147,9 @@ func ChatHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Decoded message: %+v", msg)
 
-	var userExists bool
-	err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE id=$1)", msg.UserID).Scan(&userExists)
-	if err != nil {
-		log.Printf("Error checking user existence: %v", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if !userExists {
-		log.Printf("User ID %d does not exist", msg.UserID)
-		http.Error(w, "User does not exist", http.StatusBadRequest)
-		return
-	}
+	claims, _ := r.Context().Value("claims").(jwt.MapClaims)
+	userID := int(claims["user_id"].(float64))
+	msg.UserID = userID
 
 	msg.DateTime = time.Now().Format(time.RFC3339)
 	if err := msg.Save(); err != nil {
@@ -245,6 +236,25 @@ func FileUploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("File saved successfully")
+	// Так как токен уже проверен в middleware, мы можем сразу извлечь user_id
+	claims, _ := r.Context().Value("claims").(jwt.MapClaims)
+	userID := int(claims["user_id"].(float64))
+
+	// Создаем сообщение с файлом
+	message := Message{
+		UserID:   userID,
+		Content:  fmt.Sprintf("Файл отправлен: %s", filePath), // Сохраняем путь к файлу в содержимом сообщения
+		DateTime: time.Now().Format(time.RFC3339),
+	}
+
+	// Сохраняем сообщение в базу данных
+	err = message.Save()
+	if err != nil {
+		log.Printf("Error saving message: %v", err)
+		http.Error(w, "Error saving message", http.StatusInternalServerError)
+		return
+	}
+
+	log.Println("File saved successfully and message created")
 	json.NewEncoder(w).Encode(map[string]string{"filePath": filePath})
 }
