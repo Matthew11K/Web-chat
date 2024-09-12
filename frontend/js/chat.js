@@ -70,10 +70,10 @@ async function SendMessage() {
                 text.value = ''; // Очищаем поле ввода после отправки сообщения
                 autoResize(text); // Перерасчет высоты поля
                 loadMessages(); // Обновляем чат
-                window.scrollTo({ // Прокрутка к последнему сообщению
-                    top: document.body.scrollWidth,
-                    behavior: 'smooth'
-                });
+
+                // Прокручиваем чат к последнему сообщению
+                const chat = document.getElementById('main');
+                chat.scrollTop = chat.scrollHeight; // Прокрутка вниз к последнему сообщению
             } else {
                 console.error('Ошибка отправки сообщения:', response.statusText);
             }
@@ -82,6 +82,7 @@ async function SendMessage() {
         }
     }
 }
+
 
 // Обработка клика по значку "скрепка"
 document.getElementById('clip').addEventListener('click', function () {
@@ -166,5 +167,9 @@ async function handleFileSelect(event) {
         console.error('No file selected');
     }
 }
+
+document.getElementById('Nickname').addEventListener('click', function() {
+    window.location.href = '/frontend/personalData.html'; // Замените на реальный путь к странице
+});
 
 
