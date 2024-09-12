@@ -18,6 +18,8 @@ func main() {
 	router.PathPrefix("/js/").Handler(staticFileHandler).Methods("GET")
 	router.PathPrefix("/images/").Handler(staticFileHandler).Methods("GET")
 
+	router.PathPrefix("/uploads/").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads/"))))
+
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Serving index.html")
 		http.ServeFile(w, r, filepath.Join("./frontend", "index.html"))

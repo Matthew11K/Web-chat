@@ -6,7 +6,7 @@
 }
 
 body {
-    background-image: url('апельсины2.jpg');
+    background-image: url('/frontend/images/апельсины2.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
@@ -137,6 +137,7 @@ main {
     padding: 10px;
     border-radius: 15px;
     margin-bottom: 5px;
+    min-width: 150px; /* Установите минимальную ширину */
 }
 
 .messege-text-left {
@@ -173,12 +174,15 @@ main {
 }
 
 .messege-file-right {
+    display: flex;
+    flex-direction: column;
     background-color: #f0f0f0;
     border-radius: 15px;
     padding: 10px;
     margin-bottom: 5px;
     margin-left: auto;
     border: 1px solid #aaa;
+    max-width: 500px; /* Установите максимальную ширину для сообщений с файлами */
 }
 
 .file-container {
@@ -189,11 +193,16 @@ main {
     padding: 5px;
     border-radius: 10px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Контейнер растягивается на доступную ширину */
 }
 
 .file-icon img {
     width: 40px;
     height: 40px;
+}
+
+.file-name {
+    margin-left: 10px;
 }
 
 .file-name a {
@@ -211,4 +220,23 @@ main {
     font-size: 0.7em;
     font-weight: 400;
     margin-bottom: 0;
+}
+
+/* Адаптивные стили */
+@media only screen and (max-width: 600px) {
+    #textMessege {
+        width: 80%; /* Увеличиваем ширину текстового поля на маленьких экранах */
+    }
+
+    .messege-text-left, .messege-text-right {
+        max-width: 100%; /* Сообщения занимают всю ширину на маленьких экранах */
+    }
+
+    footer {
+        width: 100%; /* Полная ширина футера */
+    }
+
+    main {
+        width: 100%; /* Сообщения занимают всю ширину */
+    }
 }

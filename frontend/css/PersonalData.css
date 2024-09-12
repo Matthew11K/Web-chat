@@ -7,7 +7,7 @@
 }
 
 body {
-    background-image: url('апельсины2.png');
+    background-image: url('/frontend/images/апельсины2.jpg');
     background-size: 100%;
     background-repeat: repeat;
     height: 100vh;

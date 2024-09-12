@@ -37,8 +37,39 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("User created with ID: %d", userID)
 	log.Printf("User phone: %s", user.Phone)
 
+	creds := Credentials{
+		NickName: user.NickName,
+		Password: user.Password,
+	}
+
+	// Аутентификация для генерации токена
+	userAuthenticated, err := Authenticate(creds)
+	if err != nil {
+		log.Printf("Authentication error after registration: %v", err)
+		http.Error(w, "Authentication failed", http.StatusInternalServerError)
+		return
+	}
+
+	// Генерация JWT токена для нового пользователя
+	token, err := GenerateJWT(userAuthenticated)
+	if err != nil {
+		log.Printf("Error generating token: %v", err)
+		http.Error(w, "Error generating token", http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("Token generated for user ID: %d", userID)
+
+	// Отправка токена и ID пользователя клиенту
+	response := map[string]interface{}{
+		"status":  "success",
+		"user_id": userID,
+		"token":   token,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(map[string]interface{}{"status": "success", "user_id": userID})
+	json.NewEncoder(w).Encode(response)
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {

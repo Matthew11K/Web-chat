@@ -3,42 +3,18 @@ function autoResize(textarea) {
     textarea.style.height = (textarea.scrollHeight - 50) + 'px';
 }
 
-console.log('Chat.js script is loaded and running');
-
 document.addEventListener('DOMContentLoaded', (event) => {
-    console.log('Document loaded, initializing chat...');
-
-    // Проверим, загружены ли нужные элементы
-    const clipElement = document.getElementById('clip');
-    const fileInputElement = document.getElementById('fileInput');
-    const sendButton = document.getElementById('Send');
-    const textMessageElement = document.getElementById('textMessege');
-    const chatElement = document.getElementById('main');
-
-    if (!clipElement || !fileInputElement || !sendButton || !textMessageElement || !chatElement) {
-        console.error('One or more elements are missing in the DOM');
-        return;
-    }
-
     loadMessages();
     setInterval(loadMessages, 5000); // Автоматическая загрузка сообщений каждые 5 секунд
 });
 
-// Функция загрузки сообщений
 async function loadMessages() {
-    console.log('Loading messages...');
     try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error('Authorization token is missing');
-            return;
-        }
-
         const response = await fetch('/messages', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Используем токен для аутентификации
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // Используем токен для аутентификации
             }
         });
 
@@ -65,37 +41,32 @@ async function loadMessages() {
 
 // Функция отправки текстового сообщения
 async function SendMessage() {
-    const text = document.getElementById('textMessege');
-    const userId = localStorage.getItem('user_id');
-    const token = localStorage.getItem('token');
-
-    if (!userId || !token) {
-        console.error('User ID or token is missing');
-        return;
-    }
-
+    var text = document.getElementById('textMessege');
     if (text.value.length != 0) {
         const currentDate = new Date();
+        const userId = parseInt(localStorage.getItem('user_id'), 10);
+        if (isNaN(userId)) {
+            console.error('User ID is missing or invalid in localStorage');
+            return;
+        }
+
         const newMessage = {
-            user_id: parseInt(userId, 10),
+            user_id: userId,
             content: text.value,
             datetime: currentDate.toISOString()
         };
-
-        console.log('Sending message:', newMessage);
 
         try {
             const response = await fetch('/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Используем токен для аутентификации
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(newMessage)
             });
 
             if (response.ok) {
-                console.log('Message sent successfully');
                 text.value = ''; // Очищаем поле ввода после отправки сообщения
                 autoResize(text); // Перерасчет высоты поля
                 loadMessages(); // Обновляем чат
@@ -114,14 +85,7 @@ async function SendMessage() {
 
 // Обработка клика по значку "скрепка"
 document.getElementById('clip').addEventListener('click', function () {
-    console.log('Clip icon clicked');
-    var fileInput = document.getElementById('fileInput');
-    if (fileInput) {
-        console.log('Opening file input dialog');
-        fileInput.click(); // Открываем диалог выбора файла
-    } else {
-        console.error('File input element not found');
-    }
+    document.getElementById('fileInput').click(); // Открываем диалог выбора файла
 });
 
 // Обработка выбора файла
@@ -151,29 +115,47 @@ async function handleFileSelect(event) {
 
             if (response.ok) {
                 const data = await response.json();
-                const filePath = data.filePath;
+                const filePath = data.filePath; // Получаем путь к загруженному файлу с сервера
                 console.log('File uploaded successfully:', filePath);
 
                 const currentDate = new Date();
+
+                // Логирование всех шагов
+                console.log('Текущая дата:', currentDate);
+                console.log('Создание HTML элемента для файла...');
+
                 var newMessege = `
                     <div class="messege-file-right">
                         <div class="file-container">
                             <div class="file-icon">
-                                <img src="imeges/файлик.png" alt="file icon">
+                                <img src="/frontend/images/файлик.png" alt="file icon">
                             </div>
                             <div class="file-name">
-                                <a href="${filePath}" download="${file.name}">${file.name}</a>
+                                <a href="/uploads/${file.name}" download="${file.name}">${file.name}</a>
                             </div>
                         </div>
                         <p>${currentDate.toLocaleTimeString().substring(0, 5)}</p>
                     </div>`;
 
+                // Проверка на валидность HTML
+                console.log('Созданное сообщение:', newMessege);
+
                 var chat = document.getElementById('main');
+                if (!chat) {
+                    console.error('Элемент с id "main" не найден при попытке вставки сообщения');
+                    return;
+                }
+
                 var newElement = document.createElement('div');
                 newElement.innerHTML = newMessege;
+
+                console.log('Добавление нового элемента в чат...');
                 chat.appendChild(newElement);
 
+                console.log('Прокрутка к последнему сообщению...');
                 chat.scrollTop = chat.scrollHeight; // Прокручиваем чат к новому сообщению
+
+                console.log('Сообщение с файлом добавлено успешно');
             } else {
                 console.error('Ошибка загрузки файла:', response.statusText);
             }
@@ -184,3 +166,5 @@ async function handleFileSelect(event) {
         console.error('No file selected');
     }
 }
+
+
