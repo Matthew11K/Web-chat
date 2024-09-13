@@ -191,38 +191,42 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func CheckPhoneHandler(w http.ResponseWriter, r *http.Request) {
-	var input struct {
-		Phone string `json:"phone"`
-	}
+    var input struct {
+        Phone string `json:"phone"`
+    }
+    if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+        log.Printf("Error decoding request body: %v", err)
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+    log.Printf("Checking if phone exists: %s", input.Phone)
 
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		log.Printf("Error decoding request body: %v", err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+    var result struct {
+        Exists bool   `json:"exists"`
+        NickName string `json:"nickname,omitempty"`
+    }
 
-	log.Printf("Checking if phone exists: %s", input.Phone)
+    err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE phone=$1)", input.Phone).Scan(&result.Exists)
+    if err != nil {
+        log.Printf("Error checking phone existence: %v", err)
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
 
-	var userExists bool
-	err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE phone=$1)", input.Phone).Scan(&userExists)
-	if err != nil {
-		log.Printf("Error checking phone existence: %v", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+    if result.Exists {
+        err := db.QueryRow("SELECT nickname FROM users WHERE phone=$1", input.Phone).Scan(&result.NickName)
+        if err != nil {
+            log.Printf("Error retrieving nickname: %v", err)
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+    }
 
-	log.Printf("Phone exists: %t", userExists)
-
-	response := map[string]bool{
-		"exists": userExists,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(response)
-	if err != nil {
-		log.Printf("Error encoding response: %v", err)
-		http.Error(w, "Error encoding response", http.StatusInternalServerError)
-	}
+    w.Header().Set("Content-Type", "application/json")
+    if err := json.NewEncoder(w).Encode(result); err != nil {
+        log.Printf("Error encoding response: %v", err)
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
 }
 
 func ChatHandler(w http.ResponseWriter, r *http.Request) {
