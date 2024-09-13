@@ -1,19 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap');
-
-* { 
+* {
     margin: 0;
     padding: 0;
 }
-
 body {
-    height: 10000px;
-    background-image: url('апельсины2.jpg');
-    background-size: 100%;
+    background-image: url('/frontend/images/апельсины2.jpg');
+    background-size: cover;
     background-repeat: repeat;
     height: 100%;
     width: 100%;
+    background-attachment: fixed;
 }
-
 header {
     background-color: #F46E0B;
     height: 70px;
@@ -22,27 +19,39 @@ header {
     top: 0;
     z-index: 1;
 }
-
+#clickableContainer {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #F46E0B;
+    width: 12%;
+}
 #Avatar {
     height: 60px;
     width: 60px;
     border-radius: 50%;
-    margin: 5px 20px;
-    cursor: pointer;
+    margin: 5px 20px 0px 30px;
+    cursor: pointer; 
 }
-
+#Avatar:hover {
+    opacity:0.8;
+}
 #Nickname {
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 100px;
     transform: translate(0,-50%);
     user-select: none;
     font-family: "Open Sans";
-    font-size: 1.2em;
+    font-size: 1.6em;
     color: #242323;
     cursor: pointer;
 }
-
+#Nickname:hover {
+    opacity:0.8;
+}
 #nameCopmapy {
     color: black;
     font-family: "Open Sans";
@@ -50,14 +59,13 @@ header {
     user-select: none;
     font-weight: 400;
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
 }
-
 footer {
     position: fixed;
-    bottom: 5px;
+    bottom: 1px;
     left: 50%;
     transform: translateX(-50%);
     background-color: #ffab61;
@@ -66,21 +74,20 @@ footer {
     border-radius: 20px;
     border: 3px solid #8ac27a;
     display: flex;
+    width: 50%; 
+    z-index: 2;
 }
-
 #clip {
     height: 40px;
-    width: 40px; 
-    cursor: pointer; 
+    width: 40px;
+    cursor: pointer;
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
 #clip:hover {
     opacity: 0.6;
     filter: grayscale(100%);
 }
-
 #textMessege {
     color: black;
     font-family: "Open Sans";
@@ -90,14 +97,13 @@ footer {
     border-radius: 15px;
     margin-left: 10px;
     margin-right: 10px;
-    width: 500px;
+    width: 100%;
     height: 30px;
     padding: 15px 20px;
     overflow: hidden;
     resize: none;
 }
-
-#Send { 
+#Send {
     background-image: none;
     border: none;
     padding: 0;
@@ -109,130 +115,128 @@ footer {
     margin-bottom: 5px;
     user-select: none;
 }
-
 #Send img {
     width: 100%;
     height: 100%;
 }
-
 #Send:hover img {
     opacity: 0.6;
 }
-
 main {
     margin-top: 80px;
-    width: 700px;
+    margin-bottom: 100px;
+    width: 80%;
+    max-width: 700px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    padding-bottom: 100px;
+    overflow-y: auto;
 }
-
-.messege-text-left {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column; 
-    width: fit-content;
-    max-width: 500px;
-    padding: 10px;
-    background-color: white;
-    border-radius: 15px;
-    margin-bottom: 5px; 
-}
-
-.messege-text-left p {
-    color: black;
-    font-family: "Open Sans";
-    font-size: 1em;
-    font-weight: 500;
-    word-break: break-word;
-}
-
-.messege-text-left p:nth-child(1), .messege-text-left p:nth-child(3) {
-    display: block;
-    margin-top: 0;
-    font-size: 0.7em;
-    font-weight: 400; 
-}
-
-.messege-text-left p:nth-child(1) {
-    font-weight: 700;
-}
-
-.messege-text-right {
+.messege-text-left, .messege-text-right {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     width: fit-content;
-    max-width: 500px;
+    max-width: 350px;
     padding: 10px;
-    background-color: #c9f5bc;
     border-radius: 15px;
     margin-bottom: 5px;
-    margin-left: auto;
-    border: 1.33px solid black; 
+    min-width: 150px; 
 }
-
-.messege-text-right p {
+.messege-text-left {
+    background-color: white;
+}
+.messege-text-left p, .messege-text-right p {
     color: black;
     font-family: "Open Sans";
     font-size: 1em;
     font-weight: 500;
     word-break: break-word;
 }
-
-.messege-text-right p:nth-child(2) {
-    display: block;
-    margin-top: 0;
-    margin-bottom: -7px; 
-    font-size: 0.6em; 
-    font-weight: 400; 
+.messege-text-left p:nth-child(2) {
+    font-size: 0.7em;
+    font-weight: 400;
 }
-
+.messege-text-right {
+    background-color: #c9f5bc;
+    margin-left: auto;
+    border: 1px solid rgb(40, 120, 0);
+}
+.messege-text-right p:nth-child(2) {
+    font-size: 0.6em;
+    font-weight: 400;
+}
 .messege-file-right {
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
-    width: fit-content;
-    max-width: 500px;
-    padding: 10px;
-    background-color: #d3d3d3;
+    background-color: #81ecfc;
     border-radius: 15px;
+    padding: 10px;
     margin-bottom: 5px;
     margin-left: auto;
-    border: 1.33px solid black; 
+    border: 1px solid #b6daff;
+    max-width: 350px; 
 }
-
 .file-container {
     display: flex;
     align-items: center;
-    margin-bottom: 8px; 
-}
-
-.file-icon {
+    margin-bottom: 8px;
     background-color: white;
-    border-radius: 5px;
     padding: 5px;
-    margin-right: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; 
 }
-
 .file-icon img {
     width: 40px;
     height: 40px;
 }
-
-.file-name a {
-    color: blue;
-    text-decoration: underline;
-    font-family: "Open Sans";
-    font-size: 1em;
-    font-weight: 500;
-    word-break: break-word;
+.file-name {
+    margin-left: 10px;
 }
-
+.file-name a {
+    color: #007bff;
+    text-decoration: underline;
+    font-size: 1em;
+}
+.file-name a:hover {
+    text-decoration: none;
+    color: #0056b3;
+}
 .messege-file-right p {
-    display: block;
-    margin-top: 0;
-    margin-bottom: -7px; 
     font-size: 0.7em;
-    font-weight: 400; 
+    font-weight: 400;
+    margin-bottom: 0;
+}
+/* Адаптивные стили */
+@media only screen and (max-width: 600px) {
+    #textMessege {
+        width: 80%; 
+    }
+    .messege-text-left, .messege-text-right {
+        max-width: 100%; 
+    }
+    footer {
+        width: 100%; 
+    }
+    main {
+        width: 100%; 
+    }
+}
+#profileButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 15px; 
+    transform: translateY(-50%);
+}
+#profileButton img {
+    width: 30px; 
+    height: 30px;
+}
+#profileButton:hover img {
+    opacity: 0.6;
 }

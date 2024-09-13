@@ -66,7 +66,11 @@ async function checkForm(event) {
 
             if (response.ok) {
                 const data = await response.json();
+                // Сохраняем токен и ID пользователя в localStorage
+                localStorage.setItem('token', data.token);
                 localStorage.setItem('user_id', data.user_id);
+
+                // Перенаправляем на страницу чата
                 window.location.href = '/chat.html';
             } else {
                 const errorData = await response.json();

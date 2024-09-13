@@ -1,4 +1,21 @@
-//это не окончательный вариант, все данные для полей будут браться из базы, но пока так
+document.addEventListener('DOMContentLoaded', (event) => {  
+    fetch('/user', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('firstName').value = data.name;
+        document.getElementById('surname').value = data.surname;
+        document.getElementById('phoneNumber').value = data.phone;
+        document.getElementById('nickname').value = data.nickname;
+    })
+    .catch(error => {
+        console.error('Ошибка при получении данных пользователя:', error);
+    });
+});
 
 function editField(fieldId) {
     const field = document.getElementById(fieldId);
@@ -29,6 +46,7 @@ function saveField(fieldId) {
     const invalidChars = /[^a-zA-Zа-яА-Я\s-]/; 
     const nicknameInvalidChars = /[^a-zA-Z0-9-._]/;
 
+    // Валидация поля в зависимости от его ID
     switch (fieldId) {
         case 'firstName':
             if (field.value.trim() === '') {
@@ -132,14 +150,35 @@ function saveField(fieldId) {
             break;
     }
 
+    // Отправка данных на сервер
+    fetch('/updateUser', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token') // Получение токена из Local Storage
+        },
+        body: JSON.stringify({
+            [fieldId]: field.value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            showPopup("Изменения сохранены!", 'success');
+        } else {
+            showPopup("Ошибка сохранения данных.", 'error');
+        }
+    })
+    .catch(error => showPopup("Ошибка сервера: " + error.message, 'error'));
+
+    // Отключение редактирования и изменение кнопок
     field.readOnly = true;
 
     editButton.style.display = 'inline-block';
     saveButton.style.display = 'none';
     cancelButton.style.display = 'none';
-
-    showPopup("Изменения сохранены!", 'success');
 }
+
 
 function cancelEdit(fieldId) {
     const field = document.getElementById(fieldId);
@@ -192,6 +231,6 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     }
 });
 
-function goToOtherPage() {
-    // window.location.href = 'your-url-here'; //здесь будет возвращение на страницу чата
+function goToChatPage() {
+    window.location.href = 'http://localhost:8080/chat.html';
 }
