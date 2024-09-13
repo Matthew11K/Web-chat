@@ -26,6 +26,7 @@ header {
     cursor: pointer;
     border-radius: 10px;
     background-color: #F46E0B;
+    width: 12%;
 }
 #Avatar {
     height: 60px;
