@@ -4,7 +4,7 @@ function autoResize(textarea) {
 }
 document.addEventListener('DOMContentLoaded', (event) => {
     loadMessages();
-    setInterval(loadMessages, 5000); // Автоматическая загрузка сообщений каждые 5 секунд
+    setInterval(loadMessagesWithoutsScrolling, 5000); // Автоматическая загрузка сообщений каждые 5 секунд
 });
 async function loadMessages() {
     try {
@@ -45,6 +45,49 @@ async function loadMessages() {
                 lastElement = newElement;
             });
             lastElement.scrollIntoView({ behavior: 'smooth' }); // Прокрутка к последнему сообщению
+        } else {
+            console.error('Ошибка загрузки сообщений:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Ошибка при загрузке сообщений:', error);
+    }
+}
+async function loadMessagesWithoutsScrolling() {
+    try {
+        const response = await fetch('/messages', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // Используем токен для аутентификации
+            }
+        });
+        if (response.ok) {
+            const messages = await response.json();
+            const chat = document.getElementById('main');
+            chat.innerHTML = ''; // Очищаем чат перед добавлением новых сообщений
+            messages.forEach(msg => {
+                var newElement = document.createElement('div');
+                if (msg.content.startsWith("Файл отправлен")) {
+                    // Сообщение с файлом
+                    newElement.className = 'messege-file-right';
+                    const filePath = msg.content.replace("Файл отправлен: ", "");
+                    newElement.innerHTML = `
+                        <div class="file-container">
+                            <div class="file-icon">
+                                <img src="/frontend/images/файлик.png" alt="file icon">
+                            </div>
+                            <div class="file-name">
+                                <a href="${filePath}" download>Скачать файл</a>
+                            </div>
+                        </div>
+                        <p>${new Date(msg.datetime).toLocaleTimeString().substring(0, 5)}</p>`;
+                } else {
+                    // Обычное текстовое сообщение
+                    newElement.className = (msg.user_id == localStorage.getItem('user_id')) ? 'messege-text-right' : 'messege-text-left';
+                    newElement.innerHTML = `<p>${msg.content.replace(/\n/g, '<br>')}</p><p>${new Date(msg.datetime).toLocaleTimeString().substring(0, 5)}</p>`;
+                }
+                chat.appendChild(newElement);
+            });
         } else {
             console.error('Ошибка загрузки сообщений:', response.statusText);
         }
