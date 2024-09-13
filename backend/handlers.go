@@ -70,7 +70,11 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(response)
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		log.Printf("Error encoding response: %v", err)
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+	}
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -99,7 +103,11 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(response)
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		log.Printf("Error encoding response: %v", err)
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+	}
 }
 
 func CheckPhoneHandler(w http.ResponseWriter, r *http.Request) {
@@ -130,9 +138,10 @@ func CheckPhoneHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(response); err != nil {
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
 		log.Printf("Error encoding response: %v", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
 	}
 }
 
@@ -145,9 +154,7 @@ func ChatHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("Decoded message: %+v", msg)
-
-	claims, _ := r.Context().Value("claims").(jwt.MapClaims)
+	claims, _ := r.Context().Value(claimsKey).(jwt.MapClaims)
 	userID := int(claims["user_id"].(float64))
 	msg.UserID = userID
 
@@ -189,9 +196,10 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(messages); err != nil {
+	err = json.NewEncoder(w).Encode(messages)
+	if err != nil {
 		log.Printf("Error encoding messages: %v", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Error encoding messages", http.StatusInternalServerError)
 	}
 }
 
@@ -236,8 +244,8 @@ func FileUploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Так как токен уже проверен в middleware, мы можем сразу извлечь user_id
-	claims, _ := r.Context().Value("claims").(jwt.MapClaims)
+	// Извлечение user_id из контекста
+	claims, _ := r.Context().Value(claimsKey).(jwt.MapClaims)
 	userID := int(claims["user_id"].(float64))
 
 	// Создаем сообщение с файлом
@@ -256,5 +264,9 @@ func FileUploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("File saved successfully and message created")
-	json.NewEncoder(w).Encode(map[string]string{"filePath": filePath})
+	err = json.NewEncoder(w).Encode(map[string]string{"filePath": filePath})
+	if err != nil {
+		log.Printf("Error encoding response: %v", err)
+		http.Error(w, "Error encoding response", http.StatusInternalServerError)
+	}
 }

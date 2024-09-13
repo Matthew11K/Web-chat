@@ -9,18 +9,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+type contextKey string
+
+const claimsKey = contextKey("claims")
+
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		tokenString := r.Header.Get("Authorization")
-		log.Println("Получен токен из заголовка:", tokenString)
-		if tokenString == "" {
-			http.Error(w, "Forbidden", http.StatusForbidden)
-			return
-		}
-
-		if strings.HasPrefix(tokenString, "Bearer ") {
-			tokenString = strings.TrimPrefix(tokenString, "Bearer ")
-		}
+		tokenString := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
 
 		token, err := ValidateJWT(tokenString)
 		if err != nil {
@@ -29,10 +24,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		// Извлечение claims из токена
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			// Добавляем claims в контекст запроса
-			ctx := context.WithValue(r.Context(), "claims", claims)
+			ctx := context.WithValue(r.Context(), claimsKey, claims)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		} else {
 			log.Println("Неверный JWT токен")
