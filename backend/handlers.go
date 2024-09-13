@@ -3,13 +3,93 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
+
+func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
+	var updateData map[string]interface{}
+	if err := json.NewDecoder(r.Body).Decode(&updateData); err != nil {
+		log.Printf("Error decoding request body: %v", err)
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+
+	claims, _ := r.Context().Value(claimsKey).(jwt.MapClaims)
+	userID := int(claims["user_id"].(float64))
+
+	// Create a User object and set the ID
+	user := &User{ID: userID}
+
+	// Update the User object based on the received data
+	if surname, ok := updateData["surname"].(string); ok {
+		user.Surname = surname
+	}
+	if name, ok := updateData["name"].(string); ok {
+		user.Name = name
+	}
+	if nickname, ok := updateData["nickname"].(string); ok {
+		user.NickName = nickname
+	}
+	if phone, ok := updateData["phone"].(string); ok {
+		// Check if the phone number is already in use
+		var exists bool
+		err := db.QueryRow("SELECT EXISTS (SELECT 1 FROM users WHERE phone = $1 AND id != $2)", phone, userID).Scan(&exists)
+		if err != nil {
+			log.Printf("Error checking phone in database: %v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		if exists {
+			http.Error(w, "Phone number already in use", http.StatusConflict)
+			return
+		}
+		user.Phone = phone
+	}
+
+	if err := user.Update(); err != nil {
+		log.Printf("Error updating user: %v", err)
+		http.Error(w, "Failed to update user", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"status":"success"}`))
+}
+
+func GetUserHandler(w http.ResponseWriter, r *http.Request) {
+	claims, ok := r.Context().Value(claimsKey).(jwt.MapClaims)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	userID := int(claims["user_id"].(float64))
+
+	// Fetch user data from database
+	var user User
+	err := db.QueryRow("SELECT surname, name, nickname, phone FROM users WHERE id = $1", userID).Scan(&user.Surname, &user.Name, &user.NickName, &user.Phone)
+	if err != nil {
+		log.Printf("Error fetching user data: %v", err)
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+
+	response, err := json.Marshal(user)
+	if err != nil {
+		log.Printf("Error marshalling user data: %v", err)
+		http.Error(w, "Error processing request", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+}
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	var user User
