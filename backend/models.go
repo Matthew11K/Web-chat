@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"log"
+	"strconv"
 )
 
 type User struct {
@@ -63,4 +64,42 @@ func Authenticate(creds Credentials) (*User, error) {
 func (m *Message) Save() error {
 	_, err := db.Exec("INSERT INTO messages (user_id, content, datetime) VALUES ($1, $2, $3)", m.UserID, m.Content, m.DateTime)
 	return err
+}
+
+// Update method for User struct
+func (u *User) Update() error {
+	query := "UPDATE users SET "
+	args := []interface{}{}
+	argCount := 1
+
+	if u.Surname != "" {
+		query += "surname = $" + strconv.Itoa(argCount) + ", "
+		args = append(args, u.Surname)
+		argCount++
+	}
+	if u.Name != "" {
+		query += "name = $" + strconv.Itoa(argCount) + ", "
+		args = append(args, u.Name)
+		argCount++
+	}
+	if u.NickName != "" {
+		query += "nickname = $" + strconv.Itoa(argCount) + ", "
+		args = append(args, u.NickName)
+		argCount++
+	}
+	if u.Phone != "" {
+		query += "phone = $" + strconv.Itoa(argCount) + ", "
+		args = append(args, u.Phone)
+		argCount++
+	}
+
+	query = query[:len(query)-2] + " WHERE id = $" + strconv.Itoa(argCount)
+	args = append(args, u.ID)
+
+	_, err := db.Exec(query, args...)
+	if err != nil {
+		log.Printf("Error updating user in database: %v", err)
+		return err
+	}
+	return nil
 }
