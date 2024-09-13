@@ -1,4 +1,21 @@
-//это не окончательный вариант, все данные для полей будут браться из базы, но пока так
+document.addEventListener('DOMContentLoaded', (event) => {  
+    fetch('/user', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('firstName').value = data.name;
+        document.getElementById('surname').value = data.surname;
+        document.getElementById('phoneNumber').value = data.phone;
+        document.getElementById('nickname').value = data.nickname;
+    })
+    .catch(error => {
+        console.error('Ошибка при получении данных пользователя:', error);
+    });
+});
 
 function editField(fieldId) {
     const field = document.getElementById(fieldId);
