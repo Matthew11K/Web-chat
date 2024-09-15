@@ -167,16 +167,18 @@ main {
     font-size: 0.6em;
     font-weight: 400;
 }
-.messege-file-right {
+.messege-file-right, .messege-file-left {
     display: flex;
     flex-direction: column;
     background-color: #81ecfc;
     border-radius: 15px;
     padding: 10px;
     margin-bottom: 5px;
-    margin-left: auto;
     border: 1px solid #b6daff;
-    max-width: 350px; 
+    max-width: 250px; 
+}
+.messege-file-right {
+    margin-left: auto;
 }
 .file-container {
     display: flex;
@@ -204,7 +206,7 @@ main {
     text-decoration: none;
     color: #0056b3;
 }
-.messege-file-right p {
+.messege-file-right p, .messege-file-left p {
     font-size: 0.7em;
     font-weight: 400;
     margin-bottom: 0;

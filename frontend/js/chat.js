@@ -24,7 +24,7 @@ async function loadMessages() {
                 var newElement = document.createElement('div');
                 if (msg.content.startsWith("Файл отправлен")) {
                     // Сообщение с файлом
-                    newElement.className = 'messege-file-right';
+                    newElement.className = (msg.user_id == localStorage.getItem('user_id')) ? 'messege-file-right' : 'messege-file-left';
                     const filePath = msg.content.replace("Файл отправлен: ", "");
                     newElement.innerHTML = `
                         <div class="file-container">
@@ -69,7 +69,7 @@ async function loadMessagesWithoutsScrolling() {
                 var newElement = document.createElement('div');
                 if (msg.content.startsWith("Файл отправлен")) {
                     // Сообщение с файлом
-                    newElement.className = 'messege-file-right';
+                    newElement.className = (msg.user_id == localStorage.getItem('user_id')) ? 'messege-file-right' : 'messege-file-left';
                     const filePath = msg.content.replace("Файл отправлен: ", "");
                     newElement.innerHTML = `
                         <div class="file-container">
