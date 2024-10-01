@@ -1,23 +1,28 @@
 FROM golang:1.18-alpine
 
+# Установка необходимых пакетов
 RUN apk add --no-cache git curl
 
+# Установка рабочей директории
 WORKDIR /app
 
+# Копирование зависимостей Go
 COPY backend/go.mod backend/go.sum ./
-
 RUN go mod download
 
-COPY backend .
+# Копирование всех файлов проекта
+COPY backend/ ./backend/
+COPY frontend/ ./frontend/
 
-COPY chat.html chat.html
-COPY css/ css/
-COPY imeges/ imeges/
-COPY index.html index.html
-COPY js/ js/
-COPY personalDataEnterAcc.html personalDataEnterAcc.html
-COPY personalDataNewAcc.html personalDataNewAcc.html
+# Сборка Go-приложения
+WORKDIR /app/backend
+RUN go build -o /app/main .
 
-RUN go build -o main .
+# Указываем директорию для статических файлов
+WORKDIR /app
 
-CMD ["./main"]
+# Установка порта по умолчанию
+EXPOSE 8080
+
+# Команда для запуска приложения
+CMD ["/app/main"]
